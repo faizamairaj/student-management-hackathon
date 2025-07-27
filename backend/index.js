@@ -14,13 +14,13 @@ import Admin from './admins/Admin.js';
 dotenv.config();
 const app = express();
 
-// app.use(cors({
-//   origin: [
-//     "http://localhost:5173",
-//     "https://student-management-hackathon-u6vj.vercel.app"
-//   ]
-// }));
-app.use(cors());
+app.use(cors({
+  origin: [
+    "http://localhost:5173",
+    "https://student-management-hackathon-u6vj.vercel.app"
+  ]
+}));
+// app.use(cors());
 
 app.use(express.json());
 
