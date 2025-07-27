@@ -17,7 +17,7 @@ const app = express();
 app.use(cors({
   origin: [
     "http://localhost:5173",
-    "https://student-management-hackathon-u6vj.vercel.app"
+    "https://student-management-hackathon-3bx1-8dacb41b1.vercel.app/"
   ]
 }));
 // app.use(cors());
