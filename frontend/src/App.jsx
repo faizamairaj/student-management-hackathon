@@ -9,6 +9,7 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
+         <Route path="/" element={<Welcome />} />
         <Route path="/welcome" element={<Welcome />} />
         <Route path="/feedback" element={<FeedbackForm />} />
         <Route path="/thankyou" element={<ThankYou />} />

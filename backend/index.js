@@ -1,3 +1,4 @@
+//  =======Modules Import============
 import express from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors';
@@ -9,20 +10,22 @@ import bcrypt from 'bcrypt';
 import Feedback from './models/Feedback.js';
 import Admin from './admins/Admin.js';
 
+// ========Express App Setup===========
 dotenv.config();
 const app = express();
 
-app.use(cors({
-  origin: [
-    "http://localhost:5173",
-    "https://student-management-hackathon-u6vj.vercel.app"
-  ]
-}));
+// app.use(cors({
+//   origin: [
+//     "http://localhost:5173",
+//     "https://student-management-hackathon-u6vj.vercel.app"
+//   ]
+// }));
+app.use(cors());
 
 app.use(express.json());
 
 
-// JWT middleware
+// =========JWT Middleware (Protects Routes)================
 const authMiddleware = (req, res, next) => {
   const token = req.headers.authorization;
   if (!token) return res.status(401).json({ message: 'Access denied' });
@@ -35,7 +38,7 @@ const authMiddleware = (req, res, next) => {
   }
 };
 
-// Routes
+// ===========Feedback Submit Route=================
 app.post('/feedback', async (req, res) => {
   const { name, email, course, rating, comments } = req.body;
   try {
@@ -46,12 +49,13 @@ app.post('/feedback', async (req, res) => {
     res.status(500).json({ message: 'Error saving feedback' });
   }
 });
-
+// ========Get All Feedbacks (Admin Protected)============
 app.get('/feedbacks', authMiddleware, async (req, res) => {
   const feedbacks = await Feedback.find().sort({ createdAt: -1 });
   res.json(feedbacks);
 });
 
+// =================Admin Create Route (Register)============
 app.post('/admin/create', async (req, res) => {
   const { username, password } = req.body;
   const hashed = await bcrypt.hash(password, 10);
@@ -60,6 +64,7 @@ app.post('/admin/create', async (req, res) => {
   res.json({ message: 'Admin created' });
 });
 
+// ==================Admin Login Route=======================
 app.post('/admin/login', async (req, res) => {
   const { username, password } = req.body;
   console.log('Login attempt:', username, password); 
@@ -79,8 +84,7 @@ app.post('/admin/login', async (req, res) => {
   res.json({ token });
 });
 
-
-//Mongodb Connect
+// =================== MongoDB Connection==================
 const db = process.env.MONGODB_URL;
 const connection = mongoose.connect(db)
 .then(() => {
@@ -90,7 +94,7 @@ const connection = mongoose.connect(db)
   });
 
 
-// Server Running
+// ================== Start Server==================
 const port = process.env.PORT;
 app.listen(port, (req, res)=> { 
   console.log(`Server is running on port ${port}`);
