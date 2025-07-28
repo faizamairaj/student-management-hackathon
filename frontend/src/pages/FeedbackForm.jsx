@@ -10,7 +10,7 @@ export default function FeedbackForm() {
     e.preventDefault();
     try {
       
-      await axios.post('https://student-management-hackathon.vercel.app/feedback', form);
+      await axios.post('http://localhost:5000/feedback', form);
       navigate('/thankyou');
     } catch (error) {
       alert('Submission failed: ' + (error.response?.data?.message || error.message));
